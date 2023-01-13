@@ -1,0 +1,11 @@
+## Interface: 100002
+## Title: MyCrafter
+## Notes: This Addon is used to export your currect crafting skills for MyCrafter.io
+## Author: JoschiGrey
+## Version: 0.1
+## DefaultState: enabled
+## SavedVariables:
+
+Libs\embeds.xml
+
+MyCrafter.lua
