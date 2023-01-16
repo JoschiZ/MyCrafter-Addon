@@ -67,19 +67,20 @@ local function getFullTabTree(tabTreeID, skillLineID)
 end
 
 --- @param skillLineID number the DF id of a profession
+--- @return table
 local function getFullProfession(skillLineID)
 	local tabTreeIDs = C_ProfSpecs.GetSpecTabIDsForSkillLine(skillLineID)
-	local tabs = {}
+	local allNodes = {}
 	for _, tabTreeID in pairs(tabTreeIDs) do
-		local tabInfoTable = {}
-		local customTabInfo = getFullTabTree(tabTreeID, skillLineID)
-		if(#customTabInfo > 0) then
-			tabInfoTable["nodes"] = customTabInfo
-			table.insert(tabs, tabInfoTable)
+		local nodes = getFullTabTree(tabTreeID, skillLineID)
+		if(#nodes > 0) then
+			for _, node in pairs(nodes) do
+				table.insert(allNodes, node)
+			end
 		end
 	end
 
-	return tabs
+	return allNodes
 end
 
 local skillLineToTradeSkillLineID = {}
@@ -95,34 +96,39 @@ skillLineToTradeSkillLineID[773] = 2828
 function MyCrafter.GetAllProfessionsOffPlayer()
 	local prof1, prof2 = GetProfessions();
 	local professionIndexes = {prof1, prof2}
-	local professionInfos = {}
+	local character = {}
 
-	professionInfos["name"] = UnitName("player")
-	professionInfos["realmID"] = GetRealmID()
-	professionInfos["professions"] = {}
+	character["name"] = UnitName("player")
+	character["realm"] = { id = GetRealmID()}
+	character["professions"] = {}
 
 	for _, professionIndex in pairs(professionIndexes) do
 
 
 		local name, _, skillLevel, _, _, _, skillLine, skillModifier = GetProfessionInfo(professionIndex)
 
+
 		local skillLineID = skillLineToTradeSkillLineID[skillLine]
 		if skillLineID then
-			table.insert(professionInfos["professions"], {
+
+			local profession = {
 				name = name,
-				tabTreeInfos = getFullProfession(skillLineToTradeSkillLineID[skillLine]),
-				skillLevel = skillLevel,
-				skillModifier = skillModifier,
-				skillLineID = skillLine,
-				tradeSkillLineID = skillLineToTradeSkillLineID[skillLine]
-			})
+				skillLineID = skillLineID,
+				progress = {
+					skill = skillLevel,
+					skillModifier = skillModifier,
+					pathNodes = getFullProfession(skillLineID)
+				}
+			}
+
+			table.insert(character.professions, profession)
 		end
 
 	end
-	if #professionInfos["professions"] == 0 then
-		professionInfos["professions"] = nil
+	if #character["professions"] == 0 then
+		character["professions"] = nil
 	end
-	return professionInfos
+	return character
 end
 
 function MyCrafter.ExportData()
