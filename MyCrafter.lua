@@ -239,6 +239,9 @@ function MyCrafter:GetMainFrame(text)
 				self:StartMoving()
 			end
 		end)
+		f:SetScript("OnMouseUp", function(self, _) -- luacheck: ignore
+			self:StopMovingOrSizing()
+		end)
 
 		-- scroll frame
 		local sf = CreateFrame("ScrollFrame", "MyCrafterScrollFrame", f, "UIPanelScrollFrameTemplate")
