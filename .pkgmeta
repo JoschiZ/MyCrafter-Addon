@@ -6,12 +6,10 @@ embedded-libraries:
   - CallbackHandler-1.0
   - LibStub
 
-enable-nolib-creation: yes
-
 ignore:
   - .gitignore
   - .github
-  - -pkgmeta
+  - .pkgmeta
 
 tools-used:
   - ViragDevTool (by brittyazel)
