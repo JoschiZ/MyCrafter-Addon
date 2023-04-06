@@ -1,9 +1,13 @@
 ## Interface: 100002
 ## Title: MyCrafter
-## Notes: This Addon is used to export your currect crafting skills for MyCrafter.io
+## Notes: This Addon is used to export your current crafting skills for MyCrafter.io
 ## Author: JoschiGrey
-## Version: 0.1
+## Version: 0.1.1
 ## DefaultState: enabled
+
+## X-Wago-ID: b6mbADKP
+
+
 ## SavedVariables:
 
 Libs\embeds.xml
