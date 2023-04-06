@@ -31,24 +31,24 @@ function MyCrafter:OnDisable()
 	-- empty --
 end
 
-local function getNodeInfo(pathID, skillLineID)
-	local children = C_ProfSpecs.GetChildrenForPath(pathID)
+local function getNodeInfo(pathNode, skillLineID)
+	local children = C_ProfSpecs.GetChildrenForPath(pathNode)
 	local configID = C_ProfSpecs.GetConfigIDForSkillLine(skillLineID)
-	local nodeInfo = C_Traits.GetNodeInfo(configID, pathID)
+	local nodeInfo = C_Traits.GetNodeInfo(configID, pathNode)
 	if nodeInfo.currentRank > 0 then
 		return {
 			children = children,
 			currentRank = nodeInfo.currentRank,
-			pathID = pathID
+			pathNode = tostring(pathNode)
 		}
 	end
 end
 
 local function getFullTabTree(tabTreeID, skillLineID)
 	local nodeInfos = {}
-	local rootPathID = C_ProfSpecs.GetRootPathForTab(tabTreeID)
+	local rootPathNode = C_ProfSpecs.GetRootPathForTab(tabTreeID)
 
-	local currentNode = rootPathID
+	local currentNode = rootPathNode
 	local nodeStack = {}
 
 	while currentNode do
@@ -99,7 +99,7 @@ function MyCrafter.GetAllProfessionsOffPlayer()
 	local character = {}
 
 	character["name"] = UnitName("player")
-	character["realm"] = { id = GetRealmID()}
+	character["realm"] = { _id = tostring(GetRealmID())}
 	character["professions"] = {}
 
 	for _, professionIndex in pairs(professionIndexes) do
